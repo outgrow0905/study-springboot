@@ -1,6 +1,6 @@
-package com.springboot.study.v1;
+package com.springboot.study.ch2.v1;
 
-import com.springboot.study.model.Department;
+import com.springboot.study.ch2.model.Department;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

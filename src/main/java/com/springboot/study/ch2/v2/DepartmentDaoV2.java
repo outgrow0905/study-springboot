@@ -1,17 +1,12 @@
-package com.springboot.study.v2;
+package com.springboot.study.ch2.v2;
 
-import com.springboot.study.model.Department;
-import com.springboot.study.model.User;
+import com.springboot.study.ch2.model.Department;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 @Slf4j
 @Repository

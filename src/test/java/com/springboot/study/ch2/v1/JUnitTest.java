@@ -1,4 +1,4 @@
-package com.springboot.study.v1;
+package com.springboot.study.ch2.v1;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

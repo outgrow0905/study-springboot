@@ -1,9 +1,9 @@
-package com.springboot.study.v1;
+package com.springboot.study.ch2.v2;
 
-import com.springboot.study.model.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
+import org.apache.logging.log4j.util.Strings;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -12,30 +12,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Slf4j
-@Repository
 @RequiredArgsConstructor
-public class UserDaoV1 {
+@Component
+public class JdbcContext {
 
     private final DataSource dataSource;
 
-    public User selectUser(int id) {
-        User user = null;
+    public String select(StrategyStatement strategyStatement) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
             connection = dataSource.getConnection();
-            preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE id = ?");
-            preparedStatement.setInt(1, id);
+            preparedStatement = strategyStatement.createPreparedStatement(connection);
             resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                user = new User();
-                user.setId(id);
-                user.setName(resultSet.getString(2));
+                return resultSet.getString(2);
             }
         } catch (SQLException e) {
-            log.error("selectUser() SQLException");
+            log.error("select() SQLException");
         } finally {
             try {
                 if (resultSet != null) {
@@ -56,21 +52,18 @@ public class UserDaoV1 {
             } catch (SQLException e) {}
 
         }
-
-        return user;
+        return Strings.EMPTY;
     }
 
-    public void updateUser(int id, String name) {
+    public void update(StrategyStatement strategyStatement) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = dataSource.getConnection();
-            preparedStatement = connection.prepareStatement("UPDATE users SET name = ? WHERE id = ?");
-            preparedStatement.setString(1, name);
-            preparedStatement.setInt(2, id);
+            preparedStatement = strategyStatement.createPreparedStatement(connection);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            log.error("updateUser() SQLException");
+            log.error("update() SQLException");
         } finally {
             try {
                 if (preparedStatement != null) {

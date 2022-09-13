@@ -1,4 +1,4 @@
-package com.springboot.study.v2;
+package com.springboot.study.ch2.v2;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

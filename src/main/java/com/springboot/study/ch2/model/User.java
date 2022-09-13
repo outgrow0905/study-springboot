@@ -1,4 +1,4 @@
-package com.springboot.study.model;
+package com.springboot.study.ch2.model;
 
 import lombok.Data;
 

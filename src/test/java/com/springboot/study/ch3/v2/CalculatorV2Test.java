@@ -2,6 +2,7 @@ package com.springboot.study.ch3.v2;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

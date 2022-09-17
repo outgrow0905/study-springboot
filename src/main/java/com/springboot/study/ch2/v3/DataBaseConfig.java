@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @Configuration
-public class MyTemplate {
+public class DataBaseConfig {
     @Autowired
     private DataSource dataSource;
 

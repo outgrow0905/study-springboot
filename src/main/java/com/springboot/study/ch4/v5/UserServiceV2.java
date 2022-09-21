@@ -32,13 +32,6 @@ public class UserServiceV2 {
         this.dataSource = dataSource;
     }
 
-    public void add(User user) {
-        if (user.getLevel() == null) {
-            user.setLevel(Level.BRONZE);
-        }
-        userDaoV5.insertUser(user);
-    }
-
     public List<User> selectUserAll() {
         return userDaoV5.selectUserAll();
     }

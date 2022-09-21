@@ -1,24 +1,23 @@
-package com.springboot.study.ch4.v5;
+package com.springboot.study.ch4.v6;
 
 import com.springboot.study.ch4.model.Level;
 import com.springboot.study.ch4.model.User;
+import com.springboot.study.ch4.v5.UserDaoV5;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
-class UserServiceV2Test {
+class UserServiceV3Test {
     User user1, user2, user3, user4;
 
     @Autowired
-    private UserServiceV2 userServiceV2;
+    private UserServiceV3 userServiceV3;
 
     @Autowired
     private UserDaoV5 userDaoV5;
@@ -41,22 +40,22 @@ class UserServiceV2Test {
 
     @Test
     void grade_user() throws Exception {
-        userServiceV2.gradeUser(user1);
+        userServiceV3.gradeUser(user1);
         assertEquals(Level.BRONZE, userDaoV5.selectUser(1).getLevel());
 
-        userServiceV2.gradeUser(user2);
+        userServiceV3.gradeUser(user2);
         assertEquals(Level.SILVER, userDaoV5.selectUser(2).getLevel());
 
-        userServiceV2.gradeUser(user3);
+        userServiceV3.gradeUser(user3);
         assertEquals(Level.GOLD, userDaoV5.selectUser(3).getLevel());
 
-        userServiceV2.gradeUser(user4);
+        userServiceV3.gradeUser(user4);
         assertEquals(Level.GOLD, userDaoV5.selectUser(4).getLevel());
     }
 
     @Test
     void grade_users() throws Exception {
-        userServiceV2.gradeUsers();
+        userServiceV3.gradeUsers();
         assertEquals(Level.BRONZE, userDaoV5.selectUser(1).getLevel());
         assertEquals(Level.SILVER, userDaoV5.selectUser(2).getLevel());
         assertEquals(Level.GOLD, userDaoV5.selectUser(3).getLevel());

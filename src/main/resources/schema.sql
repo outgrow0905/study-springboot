@@ -10,9 +10,3 @@ CREATE TABLE departments (
   id number PRIMARY KEY,
   name varchar2
 );
-
-CREATE TABLE email (
- id number PRIMARY KEY AUTO_INCREMENT,
- email varchar2,
- useYn char
-);

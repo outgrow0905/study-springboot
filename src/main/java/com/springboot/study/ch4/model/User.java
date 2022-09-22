@@ -11,12 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "users")
+@NoArgsConstructor
 public class User {
-    @Id
     private int id;
     private String name;
     private int visit;

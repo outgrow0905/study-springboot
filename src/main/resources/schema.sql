@@ -12,7 +12,7 @@ CREATE TABLE departments (
 );
 
 CREATE TABLE email (
- id number PRIMARY KEY,
+ id number PRIMARY KEY AUTO_INCREMENT,
  email varchar2,
  useYn char
 );

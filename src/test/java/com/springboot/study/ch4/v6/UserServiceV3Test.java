@@ -24,13 +24,14 @@ class UserServiceV3Test {
 
     @BeforeEach
     void setUp() {
+        userDaoV5.deleteAll();
+        assertEquals(0, userDaoV5.selectCount());
+
         user1 = new User(1, "Kim", 10, 10, Level.BRONZE);
         user2 = new User(2, "Lee", 20, 20, Level.BRONZE);
         user3 = new User(3, "Park", 30, 30, Level.BRONZE);
         user4 = new User(4, "Choi", 40, 40, Level.BRONZE);
 
-        userDaoV5.deleteAll();
-        assertEquals(0, userDaoV5.selectCount());
         userDaoV5.insertUser(user1);
         userDaoV5.insertUser(user2);
         userDaoV5.insertUser(user3);

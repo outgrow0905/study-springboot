@@ -60,6 +60,32 @@ public class UserDaoV1 {
         return user;
     }
 
+    public void insertUser(int id, String name) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = dataSource.getConnection();
+            preparedStatement = connection.prepareStatement("INSERT INTO users (id, name) VALUES (?, ?)");
+            preparedStatement.setInt(1, id);
+            preparedStatement.setString(2, name);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            log.error("insertUser() SQLException");
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {}
+
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {}
+        }
+    }
+
     public void updateUser(int id, String name) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;

@@ -1,6 +1,7 @@
 package com.springboot.study.ch2.v1;
 
 import com.springboot.study.ch2.model.Department;
+import com.springboot.study.ch2.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,9 +19,13 @@ class DepartmentDaoV1Test {
     private DepartmentDaoV1 departmentDaoV1;
 
     @Test
-    void update_and_select_department() throws Exception{
-        departmentDaoV1.updateDepartment(1, "Hello");
+    void insert_and_update_user() {
+        departmentDaoV1.insertDepartment(1, "Hello");
         Department department = departmentDaoV1.selectDepartment(1);
         assertEquals("Hello", department.getName());
+
+        departmentDaoV1.updateDepartment(1, "Bye");
+        department = departmentDaoV1.selectDepartment(1);
+        assertEquals("Bye", department.getName());
     }
 }

@@ -16,9 +16,13 @@ class UserDaoV1Test {
     private UserDaoV1 userDaoV1;
 
     @Test
-    void update_and_select_user() throws Exception{
-        userDaoV1.updateUser(1, "Hello");
+    void insert_and_update_user() {
+        userDaoV1.insertUser(1, "Hello");
         User user = userDaoV1.selectUser(1);
         assertEquals("Hello", user.getName());
+
+        userDaoV1.updateUser(1, "Bye");
+        user = userDaoV1.selectUser(1);
+        assertEquals("Bye", user.getName());
     }
 }

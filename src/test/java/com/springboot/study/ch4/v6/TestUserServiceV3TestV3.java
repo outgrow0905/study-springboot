@@ -3,12 +3,14 @@ package com.springboot.study.ch4.v6;
 import com.springboot.study.ch4.model.Level;
 import com.springboot.study.ch4.model.User;
 import com.springboot.study.ch4.v5.UserDaoV5;
+import lombok.Setter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 
 @SpringBootTest
 class TestUserServiceV3TestV3 {

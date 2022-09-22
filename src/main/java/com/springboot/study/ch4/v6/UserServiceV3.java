@@ -17,12 +17,12 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserServiceV3 {
-    private final UserDaoV5 userDaoV5;
+    private final UserDaoInterface userDaoInterface;
     private final PlatformTransactionManager transactionManager;
     private final UserLevelPolicy userLevelPolicy;
 
     public List<User> selectUserAll() {
-        return userDaoV5.selectUserAll();
+        return userDaoInterface.selectUserAll();
     }
 
     public void gradeUsers() throws Exception {
@@ -41,7 +41,7 @@ public class UserServiceV3 {
     public void gradeUser(User user) {
         Level nextLevel = userLevelPolicy.gradeLevel(user);
         if (user.getLevel() != nextLevel) {
-            userDaoV5.updateLevel(user.getId(), nextLevel);
+            userDaoInterface.updateLevel(user.getId(), nextLevel);
         }
     }
 }

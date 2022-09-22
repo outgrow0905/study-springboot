@@ -22,8 +22,8 @@ public class TestUserServiceV3 extends UserServiceV3 {
     PlatformTransactionManager transactionManager;
 
     @Autowired
-    public TestUserServiceV3(UserDaoV5 userDaoV5, PlatformTransactionManager transactionManager, UserLevelPolicy userLevelPolicy) {
-        super(userDaoV5, transactionManager, userLevelPolicy);
+    public TestUserServiceV3(UserDaoInterface userDaoInterface, PlatformTransactionManager transactionManager, UserLevelPolicy userLevelPolicy) {
+        super(userDaoInterface, transactionManager, userLevelPolicy);
     }
 
     @Override

@@ -48,7 +48,7 @@ public class UserServiceTxV1Test {
     }
 
     @Test
-    void testMock() throws Exception {
+    void transaction_rollback() throws Exception {
         // given
         UserServiceV4 userServiceV4 = new UserServiceV4(userDaoInterface);
         userServiceV4.setUserLevelPolicy(new UserLevelDefaultPolicy());

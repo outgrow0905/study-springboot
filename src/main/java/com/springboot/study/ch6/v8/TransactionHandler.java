@@ -1,6 +1,7 @@
 package com.springboot.study.ch6.v8;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +36,8 @@ public class TransactionHandler implements InvocationHandler {
             try {
                 result = methodMap.get(method.getName()).invoke(target, args);
                 transactionManager.commit(status);
-            }  catch (Exception e) {
+            }  catch (InvocationTargetException e) {
+                log.error("TransactionHandler target exception: {}", e.getTargetException().getMessage());
                 transactionManager.rollback(status);
             }
         } else {

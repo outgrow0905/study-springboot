@@ -83,7 +83,7 @@ class UserServiceV5Test {
         // given
         userServiceV5.setUserLevelPolicy(new UserLevelDefaultPolicy());
         UserServiceV5 mockUserServiceV5 = spy(userServiceV5);
-        doThrow(new RuntimeException()).when(mockUserServiceV5).gradeUser(user3);
+        doThrow(new RuntimeException("mock exception occur")).when(mockUserServiceV5).gradeUser(user3);
 
         UserServiceInterfaceV1 userService = (UserServiceInterfaceV1) Proxy.newProxyInstance(
             getClass().getClassLoader(),

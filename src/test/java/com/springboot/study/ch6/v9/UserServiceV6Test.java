@@ -72,7 +72,7 @@ public class UserServiceV6Test {
 
     @Test
     @DirtiesContext
-    void get_factory_bean() throws Exception {
+    void dynamic_proxy_transactional_with_exception() throws Exception {
         // given
         userServiceV5.setUserLevelPolicy(new UserLevelDefaultPolicy());
         UserServiceV5 mockUserServiceV5 = spy(userServiceV5);

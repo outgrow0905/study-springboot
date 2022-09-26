@@ -1,11 +1,9 @@
 package com.springboot.study.ch6.beanfactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
-@Component
+@Configuration
 public class MessageBean {
 
     @Bean
@@ -13,13 +11,17 @@ public class MessageBean {
         return Message.newMessage("hello myMessage!");
     }
 
-    @Autowired
-    private MessageFactoryBean messageFactoryBean;
+
+    @Bean(name = "myMessage2")
+    public MessageFactory messageFactoryBean() throws Exception {
+        MessageFactory messageFactoryBean = new MessageFactory();
+        messageFactoryBean.setText("message bean by messageFactoryBean");
+
+        return messageFactoryBean;
+    }
 
     @Bean
     public Message myMessage2() throws Exception {
-        messageFactoryBean.setText("message bean by messageFactoryBean");
-        return messageFactoryBean.getObject();
+        return messageFactoryBean().getObject();
     }
-
 }

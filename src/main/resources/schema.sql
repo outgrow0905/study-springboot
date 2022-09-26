@@ -1,4 +1,4 @@
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
   id number PRIMARY KEY,
   name varchar2,
   visit number,
@@ -6,7 +6,7 @@ CREATE TABLE users (
   level number
 );
 
-CREATE TABLE departments (
+CREATE TABLE IF NOT EXISTS departments (
   id number PRIMARY KEY,
   name varchar2
 );

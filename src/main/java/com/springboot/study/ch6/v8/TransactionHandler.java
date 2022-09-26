@@ -19,7 +19,7 @@ public class TransactionHandler implements InvocationHandler {
     public TransactionHandler(Object target, PlatformTransactionManager transactionManager) {
         this.target = target;
         this.transactionManager = transactionManager;
-        for (Method method : target.getClass().getDeclaredMethods()) {
+        for (Method method : target.getClass().getMethods()) {
             this.methodMap.put(method.getName(), method);
         }
     }

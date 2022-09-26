@@ -2,12 +2,10 @@ package com.springboot.study.ch6.beanfactory;
 
 import lombok.Setter;
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.context.annotation.Configuration;
 
 
 @Setter
-@Configuration
-public class MessageFactoryBean implements FactoryBean<Message> {
+public class MessageFactory implements FactoryBean<Message> {
 
     private String text;
 

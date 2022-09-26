@@ -37,20 +37,14 @@ public class UserServiceV4 implements UserServiceInterfaceV1  {
     @Override
     public void gradeUsers() throws Exception {
         List<User> users = selectUserAll();
-        log.info("users: {}", users);
         for (User user : users) {
-            log.info("user: {}", user);
             gradeUser(user);
         }
     }
 
     @Override
     public void gradeUser(User user) {
-        log.info("gradeUser user: {}", user);
-        log.info("userLevelPolicy == null : {}", userLevelPolicy == null);
-        log.info("userDaoInterface == null : {}", userDaoInterface == null);
         Level nextLevel = userLevelPolicy.gradeLevel(user);
-        log.info("user.getLevel() != nextLevel: {}", user.getLevel() != nextLevel);
         if (user.getLevel() != nextLevel) {
             userDaoInterface.updateLevel(user.getId(), nextLevel);
         }

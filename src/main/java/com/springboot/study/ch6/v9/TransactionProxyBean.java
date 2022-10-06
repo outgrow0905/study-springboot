@@ -31,7 +31,6 @@ public class TransactionProxyBean {
 
     @Bean
     public UserServiceInterfaceV1 userServiceV6() throws Exception {
-        log.info("hello userServiceV6");
         return (UserServiceInterfaceV1)userServiceTransactionProxyFactory().getObject();
     }
 }

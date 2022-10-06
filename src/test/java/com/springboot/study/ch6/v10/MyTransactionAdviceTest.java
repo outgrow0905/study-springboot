@@ -39,10 +39,10 @@ class MyTransactionAdviceTest {
     private UserServiceV5 userServiceV5;
 
     @Autowired
-    private MyTransactionAdvice myTransactionAdvice;
+    private UserServiceInterfaceV1 userServiceV7;
 
-    @Autowired
-    private NameMatchMethodPointcut myNameMatchPointcut;
+    @Resource(name = "&userServiceV7")
+    private ProxyFactoryBean userServiceProxyFactoryBean;
 
     @BeforeEach
     void setUp() {
@@ -62,16 +62,6 @@ class MyTransactionAdviceTest {
 
     @Test
     void proxy_factory_bean_transactional_without_exception() throws Exception {
-        // given
-        ProxyFactoryBean proxyFactoryBean = new ProxyFactoryBean();
-        DefaultPointcutAdvisor defaultPointcutAdvisor = new DefaultPointcutAdvisor();
-        defaultPointcutAdvisor.setAdvice(myTransactionAdvice);
-        defaultPointcutAdvisor.setPointcut(myNameMatchPointcut);
-        proxyFactoryBean.addAdvisor(defaultPointcutAdvisor);
-        proxyFactoryBean.setTarget(userServiceV5);
-
-        UserServiceInterfaceV1 userServiceV7 = (UserServiceInterfaceV1) proxyFactoryBean.getObject();
-
         // when
         userServiceV7.gradeUsers();
 
@@ -90,15 +80,8 @@ class MyTransactionAdviceTest {
         UserServiceV5 mockUserServiceV5 = spy(userServiceV5);
         doThrow(new RuntimeException("mock exception occur")).when(mockUserServiceV5).gradeUser(user3);
 
-        DefaultPointcutAdvisor defaultPointcutAdvisor = new DefaultPointcutAdvisor();
-        defaultPointcutAdvisor.setPointcut(myNameMatchPointcut);
-        defaultPointcutAdvisor.setAdvice(myTransactionAdvice);
-
-        ProxyFactoryBean proxyFactoryBean = new ProxyFactoryBean();
-        proxyFactoryBean.setTarget(mockUserServiceV5);
-        proxyFactoryBean.addAdvisor(defaultPointcutAdvisor);
-
-        UserServiceInterfaceV1 userServiceV7 = (UserServiceInterfaceV1) proxyFactoryBean.getObject();
+        userServiceProxyFactoryBean.setTarget(mockUserServiceV5);
+        UserServiceInterfaceV1 userServiceV7 = (UserServiceInterfaceV1) userServiceProxyFactoryBean.getObject();
 
         // when
         userServiceV7.gradeUsers();

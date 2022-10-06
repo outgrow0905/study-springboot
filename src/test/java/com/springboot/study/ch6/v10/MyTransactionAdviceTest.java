@@ -41,6 +41,9 @@ class MyTransactionAdviceTest {
     @Autowired
     private MyTransactionAdvice myTransactionAdvice;
 
+    @Autowired
+    private NameMatchMethodPointcut myNameMatchPointcut;
+
     @BeforeEach
     void setUp() {
         user1 = new User(1, "Kim", 10, 10, Level.BRONZE);
@@ -63,9 +66,7 @@ class MyTransactionAdviceTest {
         ProxyFactoryBean proxyFactoryBean = new ProxyFactoryBean();
         DefaultPointcutAdvisor defaultPointcutAdvisor = new DefaultPointcutAdvisor();
         defaultPointcutAdvisor.setAdvice(myTransactionAdvice);
-        NameMatchMethodPointcut nameMatchMethodPointcut = new NameMatchMethodPointcut();
-        nameMatchMethodPointcut.setMappedName("gradeUsers");
-        defaultPointcutAdvisor.setPointcut(nameMatchMethodPointcut);
+        defaultPointcutAdvisor.setPointcut(myNameMatchPointcut);
         proxyFactoryBean.addAdvisor(defaultPointcutAdvisor);
         proxyFactoryBean.setTarget(userServiceV5);
 
@@ -90,9 +91,7 @@ class MyTransactionAdviceTest {
         doThrow(new RuntimeException("mock exception occur")).when(mockUserServiceV5).gradeUser(user3);
 
         DefaultPointcutAdvisor defaultPointcutAdvisor = new DefaultPointcutAdvisor();
-        NameMatchMethodPointcut nameMatchMethodPointcut = new NameMatchMethodPointcut();
-        nameMatchMethodPointcut.setMappedName("gradeUsers");
-        defaultPointcutAdvisor.setPointcut(nameMatchMethodPointcut);
+        defaultPointcutAdvisor.setPointcut(myNameMatchPointcut);
         defaultPointcutAdvisor.setAdvice(myTransactionAdvice);
 
         ProxyFactoryBean proxyFactoryBean = new ProxyFactoryBean();

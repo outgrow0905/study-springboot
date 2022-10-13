@@ -28,7 +28,7 @@ public class MyAdvisor {
     private MyTransactionAdvice myTransactionAdvice;
 
     @Bean
-    public DefaultPointcutAdvisor MyDefaultPointcutAdvisor() {
+    public DefaultPointcutAdvisor myDefaultPointcutAdvisor() {
         DefaultPointcutAdvisor defaultPointcutAdvisor = new DefaultPointcutAdvisor();
         defaultPointcutAdvisor.setAdvice(myTransactionAdvice);
         defaultPointcutAdvisor.setPointcut(myNameMatchPointcutV2());

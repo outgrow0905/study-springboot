@@ -84,7 +84,7 @@ class MyTransactionAdviceTest {
         UserServiceInterfaceV1 userServiceV7 = (UserServiceInterfaceV1) userServiceProxyFactoryBean.getObject();
 
         // when
-        userServiceV7.gradeUsers();
+        assertThrows(RuntimeException.class, () -> userServiceV7.gradeUsers());
 
         // then
         assertEquals(Level.BRONZE, userDaoInterface.selectUser(1).getLevel());

@@ -1,34 +1,44 @@
-package com.springboot.study.ch6.v11;
+package com.springboot.study.ch6.v12;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.spy;
 
 import com.springboot.study.ch4.model.Level;
 import com.springboot.study.ch4.model.User;
-import com.springboot.study.ch4.v4.UserLevelDefaultPolicy;
 import com.springboot.study.ch4.v6.UserDaoInterface;
-import com.springboot.study.ch6.v11.UserServiceV8.TestUserServiceV8;
+import com.springboot.study.ch4.v7.UserServiceInterfaceV1;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.aop.Advisor;
+import org.springframework.aop.support.AopUtils;
+import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.data.util.ProxyUtils;
+import org.springframework.test.util.AopTestUtils;
+
+import java.lang.reflect.Proxy;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
-class UserServiceV8Test {
+class UserServiceV9Test {
+
     User user1, user2, user3, user4;
 
     @Autowired
     private UserDaoInterface userDaoInterface;
 
     @Autowired
-    private UserServiceV8 userServiceV8;
+    private UserServiceInterfaceV1 userServiceV9;
 
     @Autowired
-    private TestUserServiceV8 testUserServiceV8;
+    private UserServiceInterfaceV1 testUserServiceV9;
+
+    @Autowired
+    DefaultPointcutAdvisor myAspectJPointcutAdvisor;
 
     @BeforeEach
     void setUp() {
@@ -47,9 +57,15 @@ class UserServiceV8Test {
     }
 
     @Test
-    void auto_proxy_creator_transactional_without_exception() throws Exception {
+    void auto_proxy_created() {
+        assertTrue(userServiceV9 instanceof Proxy);
+        assertTrue(testUserServiceV9 instanceof Proxy);
+    }
+
+    @Test
+    void aspectj_pointcut_transactional_without_exception() throws Exception {
         // when
-        userServiceV8.gradeUsers();
+        userServiceV9.gradeUsers();
 
         // then
         assertEquals(Level.BRONZE, userDaoInterface.selectUser(1).getLevel());
@@ -59,10 +75,9 @@ class UserServiceV8Test {
     }
 
     @Test
-    void auto_proxy_creator_transactional_with_exception() throws Exception {
+    void aspectj_pointcut_transactional_with_exception() throws Exception {
         // when
-        testUserServiceV8.setErrorUser(user3);
-        assertThrows(RuntimeException.class, () -> testUserServiceV8.gradeUsers());
+        assertThrows(RuntimeException.class, () -> testUserServiceV9.gradeUsers());
 
         // then
         assertEquals(Level.BRONZE, userDaoInterface.selectUser(1).getLevel());

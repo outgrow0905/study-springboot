@@ -38,7 +38,6 @@ public class UserServiceV10 implements UserServiceInterfaceV1 {
 
     @Override
     public void gradeUser(User user) {
-        log.info("hello user: {}", user);
         Level nextLevel = userLevelPolicy.gradeLevel(user);
         if (user.getLevel() != nextLevel) {
             userDaoInterface.updateLevel(user.getId(), nextLevel);

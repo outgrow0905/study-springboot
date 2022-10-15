@@ -1,27 +1,22 @@
-package com.springboot.study.ch6.v12;
+package com.springboot.study.ch6.v14;
 
 import com.springboot.study.ch4.model.Level;
 import com.springboot.study.ch4.model.User;
 import com.springboot.study.ch4.v4.UserLevelPolicy;
 import com.springboot.study.ch4.v6.UserDaoInterface;
 import com.springboot.study.ch4.v7.UserServiceInterfaceV1;
-import com.springboot.study.ch6.v11.UserServiceV8;
 import com.springboot.study.ch6.v8.MyTransactional;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Slf4j
-public class UserServiceV9 implements UserServiceInterfaceV1 {
+public class UserServiceV11 implements UserServiceInterfaceV2 {
     private UserDaoInterface userDaoInterface;
     private UserLevelPolicy userLevelPolicy;
 
     @Autowired
-    public UserServiceV9(UserDaoInterface userDaoInterface, UserLevelPolicy userLevelPolicy) {
+    public UserServiceV11(UserDaoInterface userDaoInterface, UserLevelPolicy userLevelPolicy) {
         this.userDaoInterface = userDaoInterface;
         this.userLevelPolicy = userLevelPolicy;
     }
@@ -33,7 +28,6 @@ public class UserServiceV9 implements UserServiceInterfaceV1 {
 
 
     @Override
-    @MyTransactional
     public void gradeUsers() throws Exception {
         List<User> users = selectUserAll();
         for (User user : users) {
@@ -50,9 +44,9 @@ public class UserServiceV9 implements UserServiceInterfaceV1 {
     }
 
 
-    static class TestUserServiceV9 extends UserServiceV9 {
+    static class TestUserServiceV11 extends UserServiceV11 {
 
-        public TestUserServiceV9(UserDaoInterface userDaoInterface,
+        public TestUserServiceV11(UserDaoInterface userDaoInterface,
                                  UserLevelPolicy userLevelPolicy) {
             super(userDaoInterface, userLevelPolicy);
         }

@@ -19,7 +19,7 @@ public class MyPointcutAdvisor {
         AspectJExpressionPointcut aspectJExpressionPointcut = new AspectJExpressionPointcut();
         aspectJExpressionPointcut.setExpression(
                 "@annotation(com.springboot.study.ch6.v8.MyTransactional) " +
-                "&& execution(* com.springboot.study.ch6.v12.UserServiceV9.*(..))");
+                "&& bean(*ServiceV9)");
         return aspectJExpressionPointcut;
     }
 

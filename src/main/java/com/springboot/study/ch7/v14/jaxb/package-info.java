@@ -6,4 +6,4 @@
 //
 
 @javax.xml.bind.annotation.XmlSchema(namespace = "http://www.outgrow.com/sqlMap", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
-package com.springboot.study.ch7.v14;
+package com.springboot.study.ch7.v14.jaxb;

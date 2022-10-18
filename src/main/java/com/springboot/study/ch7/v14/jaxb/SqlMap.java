@@ -6,7 +6,7 @@
 //
 
 
-package com.springboot.study.ch7.v14;
+package com.springboot.study.ch7.v14.jaxb;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -6,7 +6,7 @@
 //
 
 
-package com.springboot.study.ch7.v14;
+package com.springboot.study.ch7.v14.jaxb;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

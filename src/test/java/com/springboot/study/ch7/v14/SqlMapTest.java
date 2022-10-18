@@ -1,5 +1,7 @@
 package com.springboot.study.ch7.v14;
 
+import com.springboot.study.ch7.v14.jaxb.SqlMap;
+import com.springboot.study.ch7.v14.jaxb.SqlType;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +23,7 @@ class SqlMapTest {
         JAXBContext context = JAXBContext.newInstance(classPath);
 
         Unmarshaller unmarshaller = context.createUnmarshaller();
-        SqlMap sqlMap = (SqlMap) unmarshaller.unmarshal(new File("./src/main/resources/ch7/sqlMap.xml"));
+        SqlMap sqlMap = (SqlMap) unmarshaller.unmarshal(new File("./src/main/resources/ch7/jaxb/sqlMap.xml"));
 
         List<SqlType> sqlTypeList = sqlMap.getSql();
         assertEquals("add", sqlTypeList.get(0).getKey());

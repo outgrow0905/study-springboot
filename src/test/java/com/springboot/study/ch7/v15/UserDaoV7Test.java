@@ -1,8 +1,8 @@
-package com.springboot.study.ch7.v14;
+package com.springboot.study.ch7.v15;
 
 import com.springboot.study.ch4.model.Level;
 import com.springboot.study.ch4.model.User;
-import lombok.extern.slf4j.Slf4j;
+import com.springboot.study.ch7.v14.UserDaoInterfaceV2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +10,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Slf4j
 @SpringBootTest
-class UserDaoV6Test {
+class UserDaoV7Test {
+
     User user1, user2, user3, user4;
 
     @Autowired
-    private UserDaoInterfaceV2 userDaoV6;
+    private UserDaoInterfaceV2 userDaoV7;
 
     @BeforeEach
     void setUp() {
@@ -25,15 +25,16 @@ class UserDaoV6Test {
         user3 = new User(3, "Park", 30, 30, Level.BRONZE);
         user4 = new User(4, "Choi", 40, 40, Level.BRONZE);
 
-        userDaoV6.deleteAll();
-        assertEquals(0, userDaoV6.selectCount());
-        userDaoV6.insertUser(user1);
-        userDaoV6.insertUser(user2);
-        userDaoV6.insertUser(user3);
-        userDaoV6.insertUser(user4);
-        assertEquals(4, userDaoV6.selectCount());
+        userDaoV7.deleteAll();
+        assertEquals(0, userDaoV7.selectCount());
+        userDaoV7.insertUser(user1);
+        userDaoV7.insertUser(user2);
+        userDaoV7.insertUser(user3);
+        userDaoV7.insertUser(user4);
+        assertEquals(4, userDaoV7.selectCount());
     }
 
     @Test
     void test() {}
+
 }

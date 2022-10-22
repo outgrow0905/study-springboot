@@ -41,6 +41,7 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mockito:mockito-core:4.8.0'
+    implementation 'org.springframework:spring-oxm:5.2.22.RELEASE'
     // QueryDSL
 //    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 //    implementation "com.querydsl:querydsl-apt:${queryDslVersion}"

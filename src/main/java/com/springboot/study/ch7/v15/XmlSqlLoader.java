@@ -17,10 +17,11 @@ import java.io.File;
 @Component
 public class XmlSqlLoader implements SqlLoader {
 
-    private static String FILE_NAME = "user.xml";
+    private static String DEFAULT_FILE_NAME = "user.xml";
+    private String fileName = DEFAULT_FILE_NAME;
 
-    public static void setFileName(String fileName) {
-        FILE_NAME = fileName;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public void loadSql(SqlRegistry sqlRegistry) {
@@ -30,7 +31,7 @@ public class XmlSqlLoader implements SqlLoader {
             JAXBContext context = JAXBContext.newInstance(classPath);
 
             Unmarshaller unmarshaller = context.createUnmarshaller();
-            SqlMap sqlMap = (SqlMap) unmarshaller.unmarshal(new File("./src/main/resources/ch7/" + FILE_NAME));
+            SqlMap sqlMap = (SqlMap) unmarshaller.unmarshal(new File("./src/main/resources/ch7/" + this.fileName));
             for (SqlType sqlType : sqlMap.getSql()) {
                 sqlRegistry.saveSql(sqlType.getKey(), sqlType.getValue());
             }

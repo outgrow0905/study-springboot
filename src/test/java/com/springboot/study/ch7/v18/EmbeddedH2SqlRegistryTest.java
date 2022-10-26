@@ -4,6 +4,8 @@ import com.springboot.study.ch7.v14.SqlNotFoundException;
 import com.springboot.study.ch7.v17.UpdatableSqlRegistry;
 import com.springboot.study.ch7.v17.UpdatableSqlRegistryTest;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,16 +22,19 @@ class EmbeddedH2SqlRegistryTest extends UpdatableSqlRegistryTest {
     @Autowired
     private UpdatableSqlRegistry embeddedH2SqlRegistry;
 
+    @BeforeEach
+    void setUp() {
+        embeddedH2SqlRegistry.deleteAll();
+    }
+
     @Test
     public void update_sql() {
-        embeddedH2SqlRegistry.deleteAll();
         super.setUpdatableSqlRegistry(embeddedH2SqlRegistry);
         super.update_sql();
     }
 
     @Test
     void update_sqlmap() {
-        embeddedH2SqlRegistry.deleteAll();
         embeddedH2SqlRegistry.saveSql("queryId1", "query1");
         embeddedH2SqlRegistry.saveSql("queryId2", "query2");
         embeddedH2SqlRegistry.saveSql("queryId3", "query3");

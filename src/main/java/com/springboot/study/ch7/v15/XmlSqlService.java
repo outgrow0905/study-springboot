@@ -13,15 +13,15 @@ import javax.annotation.PostConstruct;
 public class XmlSqlService implements SqlService {
 
     private final SqlLoader sqlLoader;
-    private final SqlRegistry sqlRegistry;
+    private final SqlRegistry hashMapSqlRegistry;
 
     @Override
     public String getSql(String queryId) throws SqlNotFoundException {
-        return sqlRegistry.getSql(queryId);
+        return hashMapSqlRegistry.getSql(queryId);
     }
 
     @PostConstruct
     public void loadSql() {
-        sqlLoader.loadSql(sqlRegistry);
+        sqlLoader.loadSql(hashMapSqlRegistry);
     }
 }

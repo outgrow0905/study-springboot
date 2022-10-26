@@ -1,31 +1,29 @@
 package com.springboot.study.ch7.v17;
 
 import com.springboot.study.ch7.v14.SqlNotFoundException;
+import com.springboot.study.ch7.v18.EmbeddedH2SqlRegistry;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-class ConcurrentHashMapSqlRegistryTest {
+class ConcurrentHashMapSqlRegistryTest extends UpdatableSqlRegistryTest{
+    private ConcurrentHashMapSqlRegistry concurrentHashMapSqlRegistry;
 
-    private ConcurrentHashMapSqlRegistry concurrentHashMapSqlRegistry =
-            new ConcurrentHashMapSqlRegistry();
+    @BeforeEach
+    void setUp() {
+        concurrentHashMapSqlRegistry = new ConcurrentHashMapSqlRegistry();
+        super.setUpdatableSqlRegistry(concurrentHashMapSqlRegistry);
+    }
 
     @Test
-    void update_sql() {
-        concurrentHashMapSqlRegistry.saveSql("queryId1", "query1");
-        concurrentHashMapSqlRegistry.saveSql("queryId2", "query2");
-        concurrentHashMapSqlRegistry.saveSql("queryId3", "query3");
-
-        assertEquals("query1", concurrentHashMapSqlRegistry.getSql("queryId1"));
-        assertEquals("query2", concurrentHashMapSqlRegistry.getSql("queryId2"));
-        assertEquals("query3", concurrentHashMapSqlRegistry.getSql("queryId3"));
-        assertThrows(SqlNotFoundException.class,
-                () -> concurrentHashMapSqlRegistry.updateSql("queryId4", "query4"));
-
-        concurrentHashMapSqlRegistry.updateSql("queryId1", "newQuery1");
-        assertEquals("newQuery1", concurrentHashMapSqlRegistry.getSql("queryId1"));
+    public void update_sql() {
+        super.update_sql();
     }
 }

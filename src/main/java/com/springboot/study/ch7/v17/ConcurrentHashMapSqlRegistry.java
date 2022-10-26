@@ -11,8 +11,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * sqlMap 을 인스턴스변수로 사용하기 때문에, bean으로 등록할 경우 sqlMap이 원치않는 방향으로 변경될 수 있다.
+ * 서비스별로 각각의 인스턴스를 생성하여 사용하는 방향으로 한다.
+ */
 @Slf4j
-@Component
 public class ConcurrentHashMapSqlRegistry implements UpdatableSqlRegistry {
 
     private Map<String, String> sqlMap = new ConcurrentHashMap<>();
@@ -43,7 +46,12 @@ public class ConcurrentHashMapSqlRegistry implements UpdatableSqlRegistry {
                 throw new SqlNotFoundException();
             }
 
-            this.saveSql(queryId, sqlMap.get(queryId));
+            this.updateSql(queryId, sqlMap.get(queryId));
         }
+    }
+
+    @Override
+    public void deleteAll() {
+        sqlMap.clear();
     }
 }

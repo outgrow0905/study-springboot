@@ -23,23 +23,20 @@ public class MyTransactionAdvice implements MethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
+        log.info("class: {}", invocation);
         log.info("MyTransactionAdvice method: {}", invocation.getMethod().getName());
 
         long startTime = System.currentTimeMillis();
         Object result = null;
-
-//        if (invocation.getMethod().isAnnotationPresent(MyTransactional.class)) {
-            TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
-            try {
-                result = invocation.proceed();
-                transactionManager.commit(status);
-            }  catch (RuntimeException e) {
-                log.error("MyTransactionAdvice exception: {}", e.getMessage());
-                transactionManager.rollback(status);
-            }
-//        } else {
-//            result = invocation.proceed();
-//        }
+        TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        try {
+            result = invocation.proceed();
+            transactionManager.commit(status);
+        }  catch (RuntimeException e) {
+            log.error("MyTransactionAdvice exception: {}", e.getMessage());
+            transactionManager.rollback(status);
+            throw e; // It's a super important action.
+        }
 
         log.info("boxUsage: {}", System.currentTimeMillis() - startTime);
         return result;

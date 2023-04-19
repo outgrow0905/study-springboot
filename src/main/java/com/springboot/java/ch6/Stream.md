@@ -32,3 +32,24 @@ void streamOperation() {
     System.out.println(count); // 2
 }
 ~~~
+
+
+##### don't change source
+스트림은 원본을 바꾸지 않는다.
+
+~~~java
+@Test
+void streamOperation2() {
+    List<String> fruits = List.of("apple", "banana", "mango", "blueberry");
+
+    List<String> upperCasedFruits = fruits.stream().map(String::toUpperCase).collect(Collectors.toList());
+    System.out.println(fruits); // [apple, banana, mango, blueberry]
+    System.out.println(upperCasedFruits); // [APPLE, BANANA, MANGO, BLUEBERRY]
+}
+~~~
+
+
+
+#### Exercise
+이제 실제로 스트림을 사용해보면서 알아보자.
+

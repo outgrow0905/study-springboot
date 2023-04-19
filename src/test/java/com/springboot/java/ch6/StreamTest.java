@@ -4,6 +4,7 @@ import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -66,5 +67,14 @@ public class StreamTest {
                         new Rating(),
                         Rating::average);
         System.out.println("average rating: " + rating.points);
+    }
+
+    @Test
+    void streamOperation2() {
+        List<String> fruits = List.of("apple", "banana", "mango", "blueberry");
+
+        List<String> upperCasedFruits = fruits.stream().map(String::toUpperCase).collect(Collectors.toList());
+        System.out.println(fruits); // don't change source
+        System.out.println(upperCasedFruits);
     }
 }

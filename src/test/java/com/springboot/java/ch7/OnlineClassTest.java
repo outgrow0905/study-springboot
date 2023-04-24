@@ -112,4 +112,29 @@ class OnlineClassTest {
         Optional<OnlineClass> onlineClass = springClass.filter(oc -> oc.getId() > 99999);
         System.out.println(onlineClass.isEmpty());
     }
+
+    @Test
+    void map() {
+        // findAny() returns Optional type
+        Optional<OnlineClass> springClass = springClasses.stream()
+                .filter(onlineClass -> onlineClass.getTitle().startsWith("spring"))
+                .findAny();
+
+        // map
+        Optional<Integer> optionalId = springClass.map(OnlineClass::getId);
+    }
+
+    @Test
+    void flatMap() {
+        // findAny() returns Optional type
+        Optional<OnlineClass> springClass = springClasses.stream()
+                .filter(onlineClass -> onlineClass.getTitle().startsWith("spring"))
+                .findAny();
+
+        // map
+        Optional<Optional<Progress>> progressByMap = springClass.map(OnlineClass::getOptionalProgress);
+
+        // flatMap
+        Optional<Progress> progressByFlatMap = springClass.flatMap(OnlineClass::getOptionalProgress);
+    }
 }

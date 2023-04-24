@@ -312,3 +312,58 @@ void filter() {
 
 
 ##### map
+`Optional`에도 `map`을 사용할 수 있다.  
+`Optional`로 감싸진 데이터가 없을수도 있으니 `map`의 결과값도 당연히 `Optional`이다.  
+
+~~~java
+@Test
+void map() {
+    // findAny() returns Optional type
+    Optional<OnlineClass> springClass = springClasses.stream()
+            .filter(onlineClass -> onlineClass.getTitle().startsWith("spring"))
+            .findAny();
+
+    // map
+    Optional<Integer> optionalId = springClass.map(OnlineClass::getId);
+}
+~~~
+
+
+##### flatmap
+위에서 `Optional`은 반환파라미터로 사용하자고 했다.  
+`Optional`을 반환파라미터로 하는 인자에 map을 사용하면 `Optional`안에 `Optional`이 들어있을 것이다.  
+
+~~~java
+@Test
+void flatMap() {
+    // findAny() returns Optional type
+    Optional<OnlineClass> springClass = springClasses.stream()
+            .filter(onlineClass -> onlineClass.getTitle().startsWith("spring"))
+            .findAny();
+
+    // map
+    Optional<Optional<Progress>> optionalProgress = springClass.map(OnlineClass::getOptionalProgress);
+}
+~~~
+
+보기싫다. `Optional`은 복잡한 `null` 체크와 `if`문을 정리하는 목적도 있다면서 너무 복잡하다.  
+`flatMap`은 이같은 경우 한꺼풀 벗겨준다.  
+
+~~~
+@Test
+void flatMap() {
+    // findAny() returns Optional type
+    Optional<OnlineClass> springClass = springClasses.stream()
+            .filter(onlineClass -> onlineClass.getTitle().startsWith("spring"))
+            .findAny();
+
+    // map
+    Optional<Optional<Progress>> progressByMap = springClass.map(OnlineClass::getOptionalProgress);
+  
+    // flatMap
+    Optional<Progress> progressByFlatMap = springClass.flatMap(OnlineClass::getOptionalProgress);
+}
+~~~
+
+`Optional`의 `map, flatMap` 등에서 주의할 점은 이름은 같지만 `stream`의 그것과는 전혀 다르다는 부분이다. 기억하자.
+

@@ -178,7 +178,127 @@ call kakao..
 
 
 ##### Summary
-그래서 기존의 Future의 불편함이 해소되었는가?  
+그래서 기존의 `Future`의 불편함이 해소되었는가?  
 쓰레드풀을 별도로 생성하지 않아도 되고 (다른 쓰레드풀을 사용해야 한다면 생성해서 주입할 수 있다.),  
-get() 뒤에 있던 로직을 비동기 호출로직에 체이닝함으로서 로직도 가독성이 좋아졌다.  
+`get()` 뒤에 있던 로직을 비동기 호출로직에 체이닝함으로서 로직도 가독성이 좋아졌다.  
 아무래도 장점이 많은 것 같다.
+
+
+
+#### 심화
+`CompletableFuture`에 대한 기본지식은 이정도면 된 것 같다. 실제 사용하면서 조금더 알아보자.  
+
+
+
+##### thenCompose
+`CompletableFuture`는 메서드 체이닝이 잘되어있다.  
+여러 `async`작업을 합쳐서 사용해보자.  
+`thenCompose`를 이용하여 `async` 호출의 반환값을 이용하여 다른 `async` 호출을 할 수 있다.  
+작업간에 순서의존성이 있는 경우 유용하겠다.
+
+~~~java
+@Test
+void thenCompose() throws ExecutionException, InterruptedException {
+    CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
+        System.out.println("hello thread: " + Thread.currentThread().getName());
+        return "hello";
+    });
+
+    CompletableFuture<String> future = hello.thenCompose(s -> world(s));
+    System.out.println(future.get()); // hello world
+}
+
+private CompletableFuture<String> world(String str) {
+    return CompletableFuture.supplyAsync(() -> {
+        System.out.println("world thread: " + Thread.currentThread().getName());
+        return str + " world";
+    });
+}
+~~~
+
+
+
+##### thenCombine
+두 개의 작업을 `async`로 수행하고 각각의 결과값을 모두 받아 또다른 작업을 할 수도 있다.  
+
+~~~java
+@Test
+void thenCombine() throws ExecutionException, InterruptedException {
+    CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
+        System.out.println("hello thread: " + Thread.currentThread().getName());
+        return "hello";
+    });
+    CompletableFuture<String> world = CompletableFuture.supplyAsync(() -> {
+        System.out.println("world thread: " + Thread.currentThread().getName());
+        return "world";
+    });
+
+    CompletableFuture<String> future = hello.thenCombine(world, (s1, s2) -> s1 + " " + s2);
+    System.out.println(future.get());
+}
+~~~
+처음에는 위의 결과값이 `hello world, world hello` 둘 다 나올 수 있다고 생각했지만, 항상 `helloworld`를 반환한다.  
+`s1`은 `hello`의 반환값, `s2`는 `world`의 반환값이기 때문이다.  
+
+
+
+##### allOf
+두 개의 작업이 아닌 여러개의 작업을 병렬로 호출하고 결과값을 이용하고 싶을 수 있다.  
+
+~~~java
+@Test
+void allOf() {
+    CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
+        System.out.println("hello thread: " + Thread.currentThread().getName());
+        return "hello";
+    });
+    CompletableFuture<String> java = CompletableFuture.supplyAsync(() -> {
+        System.out.println("java thread: " + Thread.currentThread().getName());
+        return "java";
+    });
+    CompletableFuture<String> world = CompletableFuture.supplyAsync(() -> {
+        System.out.println("world thread: " + Thread.currentThread().getName());
+        return "world";
+    });
+
+    CompletableFuture<Void> futures = CompletableFuture.allOf(hello, java, world);
+}
+~~~
+위의 예시에서 `allOf`의 반환값이 `CompletableFuture<Void>`이다. 굉장히 이상하다.  
+세 작업의 결과값이 전부 `CompletableFuture<String>`인데 `List<CompletableFuture<String>>`이 나와야 하는것 아닌가?  
+`allOf`의 인자로 들어올수 있는 것들이 같은 타입이 아닐 수 있기 때문이라는 설명은 납득이 안된다. 전부 `CompletableFuture<String>`으로 지정하지 않았는가.  
+여러개의 호출 중 실패한 작업이 있을 수 있기 때문이라는 설명이 그나마 조금 설명이 된다.  
+100개의 작업 중 1개가 실패하면 99개의 리스트를 리턴할 것인가, 아니면 작업자체를 실패시켜야 하는가의 문제가 있을 수 있다.  
+
+어찌됬든 지금은 리턴타입이 `CompletableFuture<Void>`이기때문에 원하는 작업을 하려면 아래와 같이 수행해야 한다.  
+
+~~~java
+@Test
+void allOf2() throws ExecutionException, InterruptedException {
+    CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
+        System.out.println("hello thread: " + Thread.currentThread().getName());
+        return "hello";
+    });
+    CompletableFuture<String> java = CompletableFuture.supplyAsync(() -> {
+        System.out.println("java thread: " + Thread.currentThread().getName());
+        return "java";
+    });
+    CompletableFuture<String> world = CompletableFuture.supplyAsync(() -> {
+        System.out.println("world thread: " + Thread.currentThread().getName());
+        return "world";
+    });
+
+    CompletableFuture<String>[] futures = new CompletableFuture[]{hello, java, world};
+    CompletableFuture<List<String>> results = CompletableFuture.allOf(futures)
+            .thenApply(v -> // v는 아무런 의미가 없다.
+                    // thenApply는 allOf 리스트의 모든 작업이 끝났음을 의미한다.
+                    // 미리 지정해둔 futures를 순회하면서 join을 통해 결과값들을 리스트로 다시 저장한다.
+                    Arrays.stream(futures)
+                            .map(CompletableFuture::join)
+                            .collect(Collectors.toList()));
+
+    results.get().forEach(System.out::println);
+}
+~~~
+`join`은 처음 쓰였는데 `get`과 같지만 `unchecked` 예외를 발생시키는 정도로만 이해하자.  
+`솔직히 invokeAll이 훨씬 편하다.`

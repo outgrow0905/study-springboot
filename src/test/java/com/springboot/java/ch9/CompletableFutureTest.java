@@ -2,7 +2,11 @@ package com.springboot.java.ch9;
 
 import org.junit.jupiter.api.Test;
 
+import java.sql.Array;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 public class CompletableFutureTest {
     @Test
@@ -60,4 +64,82 @@ public class CompletableFutureTest {
         System.out.println(future.get());
     }
 
+
+    @Test
+    void thenCompose() throws ExecutionException, InterruptedException {
+        CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
+            System.out.println("hello thread: " + Thread.currentThread().getName());
+            return "hello";
+        });
+
+        CompletableFuture<String> future = hello.thenCompose(s -> world(s));
+        System.out.println(future.get());
+    }
+
+    private CompletableFuture<String> world(String str) {
+        return CompletableFuture.supplyAsync(() -> {
+            System.out.println("world thread: " + Thread.currentThread().getName());
+            return str + " world";
+        });
+    }
+
+    @Test
+    void thenCombine() throws ExecutionException, InterruptedException {
+        CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
+            System.out.println("hello thread: " + Thread.currentThread().getName());
+            return "hello";
+        });
+        CompletableFuture<String> world = CompletableFuture.supplyAsync(() -> {
+            System.out.println("world thread: " + Thread.currentThread().getName());
+            return "world";
+        });
+
+        CompletableFuture<String> future = hello.thenCombine(world, (s1, s2) -> s1 + " " + s2);
+        System.out.println(future.get());
+    }
+
+    @Test
+    void allOf1() {
+        CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
+            System.out.println("hello thread: " + Thread.currentThread().getName());
+            return "hello";
+        });
+        CompletableFuture<String> java = CompletableFuture.supplyAsync(() -> {
+            System.out.println("java thread: " + Thread.currentThread().getName());
+            return "java";
+        });
+        CompletableFuture<String> world = CompletableFuture.supplyAsync(() -> {
+            System.out.println("world thread: " + Thread.currentThread().getName());
+            return "world";
+        });
+
+        CompletableFuture<Void> futures = CompletableFuture.allOf(hello, java, world);
+    }
+
+    @Test
+    void allOf2() throws ExecutionException, InterruptedException {
+        CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
+            System.out.println("hello thread: " + Thread.currentThread().getName());
+            return "hello";
+        });
+        CompletableFuture<String> java = CompletableFuture.supplyAsync(() -> {
+            System.out.println("java thread: " + Thread.currentThread().getName());
+            return "java";
+        });
+        CompletableFuture<String> world = CompletableFuture.supplyAsync(() -> {
+            System.out.println("world thread: " + Thread.currentThread().getName());
+            return "world";
+        });
+
+        CompletableFuture<String>[] futures = new CompletableFuture[]{hello, java, world};
+        CompletableFuture<List<String>> results = CompletableFuture.allOf(futures)
+                .thenApply(v -> // v는 아무런 의미가 없다.
+                        // thenApply는 allOf 리스트의 모든 작업이 끝났음을 의미한다.
+                        // 미리 지정해둔 futures를 순회하면서 join을 통해 결과값들을 리스트로 다시 저장한다.
+                        Arrays.stream(futures)
+                                .map(CompletableFuture::join)
+                                .collect(Collectors.toList()));
+
+        results.get().forEach(System.out::println);
+    }
 }

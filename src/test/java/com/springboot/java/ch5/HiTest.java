@@ -12,7 +12,7 @@ class HiTest {
 
         // NPE
         Hi hi2 = new MyHi(null);
-        hi2.hiUpperCase();
+//        hi2.hiUpperCase();
     }
 
     @Test

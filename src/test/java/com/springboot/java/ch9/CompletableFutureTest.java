@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.Array;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
@@ -141,5 +142,41 @@ public class CompletableFutureTest {
                                 .collect(Collectors.toList()));
 
         results.get().forEach(System.out::println);
+    }
+
+    @Test
+    void exceptionally() throws ExecutionException, InterruptedException {
+        CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
+            boolean logic = true;
+            if (logic) {
+                throw new RuntimeException();
+            }
+            System.out.println("Thread: " + Thread.currentThread().getName());
+            return "hello";
+        }).exceptionally(throwable -> {
+            System.out.println(throwable);
+            return "error";
+        });
+
+        System.out.println(hello.get());
+    }
+
+    @Test
+    void handle() throws ExecutionException, InterruptedException {
+        CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
+            boolean logic = true;
+            if (!logic) {
+                throw new RuntimeException();
+            }
+            System.out.println("Thread: " + Thread.currentThread().getName());
+            return "hello";
+        }).handle((s, throwable) -> {
+            if (Objects.equals(s, "hello")) {
+                return "world";
+            }
+            return s;
+        });
+
+        System.out.println(hello.get());
     }
 }

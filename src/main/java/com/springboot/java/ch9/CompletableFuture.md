@@ -302,3 +302,82 @@ void allOf2() throws ExecutionException, InterruptedException {
 ~~~
 `join`은 처음 쓰였는데 `get`과 같지만 `unchecked` 예외를 발생시키는 정도로만 이해하자.  
 `솔직히 invokeAll이 훨씬 편하다.`
+
+
+
+##### exceptionally
+비동기호출에서 실패가 발생하면 어떻게 처리할까?  
+`exceptionally`의 인터페이스는 아래와 같다.
+
+~~~java
+public CompletableFuture<T> exceptionally(
+    Function<Throwable, ? extends T> fn) {
+    return uniExceptionallyStage(fn);
+}
+~~~
+
+`Throwable`을 받아서 `T`타입을 리턴한다.
+
+~~~java
+@Test
+void exceptionally() throws ExecutionException, InterruptedException {
+    CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
+        boolean logic = true;
+        if (logic) {
+            throw new RuntimeException();
+        }
+        System.out.println("Thread: " + Thread.currentThread().getName());
+        return "hello";
+    }).exceptionally(throwable -> {
+        System.out.println(throwable);
+        return "error";
+    });
+
+    System.out.println(hello.get());
+}
+~~~
+
+여기서 `T`는 `String`임으로 실패가 발생했다면 특정 `String`으로 리턴하도록 할 수 있다.  
+
+
+
+##### handle
+어떤 API는 오류를 리턴하지 않고 특정 상태값을 보내주는 경우가 있다.  
+`200 OK` 응답을 주지만 그 안에 `status`가 들어있다거나 성공여부를 파라미터로 담아주는 경우이다.    
+이런 경우에는 `handle`을 사용할 수 있다. 
+
+
+`handle`의 인터페이스는 아래와 같다. 
+
+~~~java
+public <U> CompletableFuture<U> handle(
+    BiFunction<? super T, Throwable, ? extends U> fn) {
+    return uniHandleStage(null, fn);
+}
+~~~
+
+API의 리턴값인 `T`와 `Throwable`을 받아서 `U`를 리턴하는 형식이다.  
+여기서 `T`는 API의 리턴값이다.  
+따라서, 아래와 같이 사용할 수 있다.  
+API의 응닶값이 `hello`이면 오류로 간주하고 `world`를 리턴하거나, 명시적으로 오류를 던지도록 처리할 수 있는 것이다.  
+아래의 코드는 오류로 간주하고 `world`를 던지도록 하는 예시이다.
+
+~~~java
+@Test
+void handle() throws ExecutionException, InterruptedException {
+    CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
+        boolean logic = true;
+        if (!logic) {
+            throw new RuntimeException();
+        }
+        System.out.println("Thread: " + Thread.currentThread().getName());
+        return "hello";
+    }).handle((s, throwable) -> {
+        if (Objects.equals(s, "hello")) {
+            return "world";
+        }
+        return s;
+    });
+
+    System.out.println(hello.get());
+}

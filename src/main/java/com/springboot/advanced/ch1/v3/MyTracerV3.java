@@ -1,14 +1,13 @@
-package com.springboot.advanced.ch1.v1;
+package com.springboot.advanced.ch1.v3;
 
 import com.springboot.advanced.ch1.trace.TraceId;
 import com.springboot.advanced.ch1.trace.TraceStatus;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.ScopeMetadata;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class MyTracer {
+public class MyTracerV3 {
 
     private static final String START_PREFIX = "-->";
     private static final String COMPLETE_PREFIX = "<--";
@@ -16,6 +15,13 @@ public class MyTracer {
 
     public TraceStatus begin(String message) {
         TraceId traceId = new TraceId();
+        long startTime = System.currentTimeMillis();
+        log.info("[{}] {}{}", traceId.getId(), addSpace(START_PREFIX, traceId.getLevel()), message);
+        return new TraceStatus(traceId, startTime, message);
+    }
+
+    public TraceStatus begin(TraceId beforeTraceId, String message) {
+        TraceId traceId = beforeTraceId.createNextTraceId();
         long startTime = System.currentTimeMillis();
         log.info("[{}] {}{}", traceId.getId(), addSpace(START_PREFIX, traceId.getLevel()), message);
         return new TraceStatus(traceId, startTime, message);
@@ -44,7 +50,7 @@ public class MyTracer {
         if (e == null) {
             log.info("[{}] {}{} time={}ms", traceId.getId(), addSpace(COMPLETE_PREFIX, traceId.getLevel()), status.getMessage(), boxUsage);
         } else {
-            log.error("[{}] {}{} time={}ms ex={}", traceId.getId(), addSpace(EX_PREFIX, traceId.getLevel()), status.getMessage(), boxUsage, e);
+            log.error("[{}] {}{} time={}ms ex={}", traceId.getId(), addSpace(EX_PREFIX, traceId.getLevel()), status.getMessage(), boxUsage, e.getClass().getName());
         }
     }
 }

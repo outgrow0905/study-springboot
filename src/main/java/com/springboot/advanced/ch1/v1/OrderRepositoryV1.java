@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class OrderRepository {
+public class OrderRepositoryV1 {
     public void save(String itemId) {
         if (itemId.equals("ex")) {
             throw new IllegalStateException("IllegalStateException occur");

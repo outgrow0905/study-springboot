@@ -155,7 +155,7 @@ void invokeAll() throws InterruptedException, ExecutionException {
 
 
 ##### invokeAny
-상황에 따라 invokeAny 메서드가 유용할 수 있다.
+상황에 따라 `invokeAny` 메서드가 유용할 수 있다.
 
 ~~~java
 @Test

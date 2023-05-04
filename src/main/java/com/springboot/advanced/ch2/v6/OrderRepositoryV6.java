@@ -1,7 +1,6 @@
 package com.springboot.advanced.ch2.v6;
 
 import com.springboot.advanced.ch1.trace.LogTrace;
-
 import com.springboot.advanced.ch2.v6.template.AbstractTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

@@ -1,28 +1,27 @@
-package com.springboot.advanced.ch1.v4;
+package com.springboot.advanced.ch1.v5;
 
 import com.springboot.advanced.ch1.trace.LogTrace;
 import com.springboot.advanced.ch1.trace.TraceStatus;
-import com.springboot.advanced.ch1.v2.MyTracerV2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class OrderRepositoryV4 {
+public class OrderRepositoryV5 {
 
-    private final LogTrace logTraceV4;
+    private final LogTrace logTraceV5;
     public void save(String itemId) {
 
         TraceStatus status = null;
         try {
-            status = logTraceV4.begin("OrderRepository save()");
+            status = logTraceV5.begin("OrderRepository save()");
             if (itemId.equals("ex")) {
                 throw new IllegalStateException("IllegalStateException occur");
             }
             sleep();
-            logTraceV4.end(status);
+            logTraceV5.end(status);
         } catch (Exception e) {
-            logTraceV4.exception(status, e);
+            logTraceV5.exception(status, e);
             throw e;
         }
     }

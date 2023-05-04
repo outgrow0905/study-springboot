@@ -1,14 +1,17 @@
-package com.springboot.advanced.ch1.trace;
+package com.springboot.advanced.ch1.v5;
 
+import com.springboot.advanced.ch1.trace.LogTrace;
+import com.springboot.advanced.ch1.trace.TraceId;
+import com.springboot.advanced.ch1.trace.TraceStatus;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class MyLogTrace implements LogTrace {
+public class MyLogTraceV5 implements LogTrace {
 
     private static final String START_PREFIX = "-->";
     private static final String COMPLETE_PREFIX = "<--";
     private static final String EX_PREFIX = "<X-";
-    private TraceId traceIdHolder;
+    private ThreadLocal<TraceId> traceIdHolder = new ThreadLocal<>();
 
     @Override
     public TraceStatus begin(String message) {
@@ -29,13 +32,13 @@ public class MyLogTrace implements LogTrace {
     }
 
     private TraceId getTraceId() {
-        if (null == traceIdHolder) {
-            traceIdHolder = new TraceId();
-            return traceIdHolder;
+        if (null == traceIdHolder.get()) {
+            traceIdHolder.set(new TraceId());
+            return traceIdHolder.get();
         }
 
-        traceIdHolder = traceIdHolder.createNextTraceId();
-        return traceIdHolder;
+        traceIdHolder.set(traceIdHolder.get().createNextTraceId());
+        return traceIdHolder.get();
     }
 
     private void complete(TraceStatus status, Exception e) {
@@ -52,10 +55,10 @@ public class MyLogTrace implements LogTrace {
     }
 
     private void releaseTraceIdHolder() {
-        if (traceIdHolder.isFirstLevel()) {
-            traceIdHolder = null;
+        if (traceIdHolder.get().isFirstLevel()) {
+            traceIdHolder.remove();
         } else {
-            traceIdHolder = traceIdHolder.createPreviousTraceId();
+            traceIdHolder.set(traceIdHolder.get().createPreviousTraceId());
         }
     }
 

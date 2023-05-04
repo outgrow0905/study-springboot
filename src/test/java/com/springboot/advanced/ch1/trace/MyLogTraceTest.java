@@ -1,13 +1,12 @@
 package com.springboot.advanced.ch1.trace;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import com.springboot.advanced.ch1.v4.MyLogTraceV4;
 import org.junit.jupiter.api.Test;
 
 class MyLogTraceTest {
     @Test
     void beginAndEnd() {
-        MyLogTrace trace = new MyLogTrace();
+        MyLogTraceV4 trace = new MyLogTraceV4();
         TraceStatus step1 = trace.begin("step1");
         TraceStatus step2 = trace.begin("step2");
         trace.end(step2);
@@ -16,7 +15,7 @@ class MyLogTraceTest {
 
     @Test
     void beginAndException() {
-        MyLogTrace trace = new MyLogTrace();
+        MyLogTraceV4 trace = new MyLogTraceV4();
         TraceStatus hello = trace.begin("hello");
         TraceStatus world = trace.begin("world");
         trace.exception(world, new IllegalStateException());

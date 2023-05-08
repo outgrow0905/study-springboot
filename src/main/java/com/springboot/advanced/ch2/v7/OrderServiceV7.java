@@ -7,11 +7,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class OrderServiceV7 {
     private final OrderRepositoryV7 orderRepository;
 
     private final LogContext context;
+
+    public OrderServiceV7(OrderRepositoryV7 orderRepository, LogTrace logTraceV5) {
+        this.orderRepository = orderRepository;
+        this.context = new LogContext(logTraceV5);
+    }
 
     public void orderItem(String itemId) {
         context.execute(

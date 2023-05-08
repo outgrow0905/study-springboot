@@ -7,10 +7,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@RequiredArgsConstructor
 public class OrderRepositoryV7 {
 
     private final LogContext context;
+
+    public OrderRepositoryV7(LogTrace logTraceV5) {
+        this.context = new LogContext(logTraceV5);
+    }
+
     public void save(String itemId) {
         context.execute(
             "OrderRepository save()",

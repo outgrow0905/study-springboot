@@ -2,15 +2,14 @@ package com.springboot.advanced.ch2.v7.strategy;
 
 import com.springboot.advanced.ch1.trace.LogTrace;
 import com.springboot.advanced.ch1.trace.TraceStatus;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
-@Slf4j
-@RequiredArgsConstructor
-@Component
+
 public class LogContext {
     private final LogTrace logTraceV5;
+
+    public LogContext(LogTrace logTraceV5) {
+        this.logTraceV5 = logTraceV5;
+    }
 
     public <T> T execute(String message, LogContextStrategy<T> strategy) {
         TraceStatus status = null;

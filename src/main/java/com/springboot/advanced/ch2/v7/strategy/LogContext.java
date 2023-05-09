@@ -5,21 +5,21 @@ import com.springboot.advanced.ch1.trace.TraceStatus;
 
 
 public class LogContext {
-    private final LogTrace logTraceV5;
+    private final LogTrace logTrace;
 
-    public LogContext(LogTrace logTraceV5) {
-        this.logTraceV5 = logTraceV5;
+    public LogContext(LogTrace logTrace) {
+        this.logTrace = logTrace;
     }
 
     public <T> T execute(String message, LogContextStrategy<T> strategy) {
         TraceStatus status = null;
         try {
-            status = logTraceV5.begin(message);
+            status = logTrace.begin(message);
             T t = strategy.action();
-            logTraceV5.end(status);
+            logTrace.end(status);
             return t;
         } catch (Exception e) {
-            logTraceV5.exception(status, e);
+            logTrace.exception(status, e);
             throw e;
         }
     }

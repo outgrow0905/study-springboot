@@ -1,9 +1,9 @@
-package com.springboot.advanced.ch3.v10;
+package com.springboot.advanced.ch3.v17;
 
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class OrderRepositoryV10 {
+public class OrderRepositoryV17 {
     public void save(String itemId) {
         if (itemId.equals("ex")) {
             throw new IllegalStateException("IllegalStateException occur");

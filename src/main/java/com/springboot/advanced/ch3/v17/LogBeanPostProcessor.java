@@ -32,7 +32,6 @@ public class LogBeanPostProcessor implements BeanPostProcessor {
         Object proxy = proxyFactory.getProxy();
 
         log.info("target: {}, proxy: {}", bean.getClass(), proxy.getClass());
-        log.info("isAop:{}", AopUtils.isAopProxy(bean));
 
         return proxy;
     }

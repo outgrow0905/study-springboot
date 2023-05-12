@@ -39,7 +39,7 @@ public class UserServiceV6Test {
     @Autowired
     private UserServiceV5 userServiceV5;
 
-    @Resource(name = "&userServiceV6")
+    @Autowired
     private TransactionProxyFactory transactionProxyFactory;
 
     @BeforeEach

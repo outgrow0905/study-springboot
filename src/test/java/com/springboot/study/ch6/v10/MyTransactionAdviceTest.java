@@ -1,30 +1,25 @@
 package com.springboot.study.ch6.v10;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.spy;
-
 import com.springboot.study.ch4.model.Level;
 import com.springboot.study.ch4.model.User;
 import com.springboot.study.ch4.v4.UserLevelDefaultPolicy;
 import com.springboot.study.ch4.v6.UserDaoInterface;
 import com.springboot.study.ch4.v7.UserServiceInterfaceV1;
-import com.springboot.study.ch6.v10.proxyfactorybean.MySay;
 import com.springboot.study.ch6.v8.UserServiceV5;
-import com.springboot.study.ch6.v9.TransactionProxyFactory;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.aopalliance.aop.Advice;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.aop.Advisor;
 import org.springframework.aop.framework.ProxyFactoryBean;
-import org.springframework.aop.support.DefaultPointcutAdvisor;
-import org.springframework.aop.support.NameMatchMethodPointcut;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+
+import javax.annotation.Resource;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.spy;
 
 @Slf4j
 @SpringBootTest
@@ -41,7 +36,7 @@ class MyTransactionAdviceTest {
     @Autowired
     private UserServiceInterfaceV1 userServiceV7;
 
-    @Resource(name = "&userServiceV7")
+    @Autowired
     private ProxyFactoryBean userServiceProxyFactoryBean;
 
     @BeforeEach

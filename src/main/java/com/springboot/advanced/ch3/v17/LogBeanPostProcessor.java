@@ -28,10 +28,10 @@ public class LogBeanPostProcessor implements BeanPostProcessor {
 
         ProxyFactory proxyFactory = new ProxyFactory(bean);
         proxyFactory.addAdvisor(advisor);
-        proxyFactory.setProxyTargetClass(true); // why orderRepositoryV17 is jdk proxy...?
+//        proxyFactory.setProxyTargetClass(true); // why orderRepositoryV17 is jdk proxy...?
         Object proxy = proxyFactory.getProxy();
 
-        log.info("target: {}, proxy: {}", bean, proxy);
+        log.info("target: {}, proxy: {}", bean.getClass(), proxy.getClass());
         log.info("isAop:{}", AopUtils.isAopProxy(bean));
 
         return proxy;

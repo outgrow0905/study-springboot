@@ -1,8 +1,9 @@
 package com.springboot.advanced.ch3.v17;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Component // why @Repository is auto proxied..?
 public class OrderRepositoryV17 {
     public void save(String itemId) {
         if (itemId.equals("ex")) {

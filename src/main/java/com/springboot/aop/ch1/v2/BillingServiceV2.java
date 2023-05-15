@@ -1,0 +1,22 @@
+package com.springboot.aop.ch1.v2;
+
+import com.springboot.aop.ch1.v1.BillingRepositoryV1;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+@Service
+@Slf4j
+public class BillingServiceV2 {
+    private final BillingRepositoryV2 billingRepository;
+
+    public BillingServiceV2(BillingRepositoryV2 billingRepository) {
+        this.billingRepository = billingRepository;
+    }
+
+    public void orderItem(String itemId) {
+        log.info("{}, {}",
+                new Object(){}.getClass().getName(),
+                new Object(){}.getClass().getEnclosingMethod().getName());
+        billingRepository.save(itemId);
+    }
+}

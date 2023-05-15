@@ -1,9 +1,9 @@
-package com.springboot.advanced.ch3.v17;
+package com.springboot.advanced.ch4.v19;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component // why @Repository is auto proxied..?
-public class OrderRepositoryV17 {
+@Repository
+public class OrderRepositoryV19 {
     public void save(String itemId) {
         if (itemId.equals("ex")) {
             throw new IllegalStateException("IllegalStateException occur");

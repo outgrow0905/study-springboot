@@ -8,17 +8,11 @@ import com.springboot.study.ch4.v7.UserServiceInterfaceV1;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.aop.Advisor;
 import org.springframework.aop.support.AopUtils;
-import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.util.ProxyUtils;
-import org.springframework.test.util.AopTestUtils;
 
 import java.lang.reflect.Proxy;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -55,8 +49,10 @@ class UserServiceV9Test {
 
     @Test
     void auto_proxy_created() {
-        assertTrue(userServiceV9 instanceof Proxy);
-        assertTrue(testUserServiceV9 instanceof Proxy);
+        assertTrue(AopUtils.isAopProxy(userServiceV9));
+        assertTrue(AopUtils.isCglibProxy(userServiceV9));
+        assertTrue(AopUtils.isAopProxy(testUserServiceV9));
+        assertTrue(AopUtils.isCglibProxy(testUserServiceV9));
     }
 
     @Test

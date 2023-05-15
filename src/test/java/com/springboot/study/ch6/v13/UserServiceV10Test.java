@@ -12,6 +12,7 @@ import java.lang.reflect.Proxy;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -47,8 +48,10 @@ class UserServiceV10Test {
 
     @Test
     void auto_proxy_created() {
-        assertTrue(userServiceV10 instanceof Proxy);
-        assertTrue(testUserServiceV10 instanceof Proxy);
+        assertTrue(AopUtils.isAopProxy(userServiceV10));
+        assertTrue(AopUtils.isCglibProxy(userServiceV10));
+        assertTrue(AopUtils.isAopProxy(testUserServiceV10));
+        assertTrue(AopUtils.isCglibProxy(testUserServiceV10));
     }
 
     @Test

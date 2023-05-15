@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AutoProxyConfig19 {
+public class AutoProxyConfigV19 {
     @Bean
     public Advisor advisor19(LogTrace logTraceV5) {
         // pointcut

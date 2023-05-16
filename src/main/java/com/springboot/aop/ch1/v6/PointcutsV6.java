@@ -10,5 +10,5 @@ public class PointcutsV6 {
     public void logServiceV6(){}
 
     @Pointcut("logV6Package() && logServiceV6()")
-    public void logServiceV6InV5Package() {}
+    public void logServiceV6InV6Package() {}
 }

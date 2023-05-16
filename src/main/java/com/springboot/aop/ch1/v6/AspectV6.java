@@ -25,17 +25,21 @@ public class AspectV6 {
     @Component
     @Order(1)
     public static class TxAspectV6 {
-        @Around("com.springboot.aop.ch1.v6.PointcutsV6.logServiceV6InV5Package()")
+        @Around("com.springboot.aop.ch1.v6.PointcutsV6.logServiceV6InV6Package()")
         public Object doTransaction(ProceedingJoinPoint joinPoint) throws Throwable {
             try {
+                // @Before
                 log.info("[transaction/start] {}", joinPoint.getSignature());
                 Object result = joinPoint.proceed();
+                // @AfterReturning
                 log.info("[transaction/commit] {}", joinPoint.getSignature());
                 return result;
             } catch (Exception e) {
+                // @AfterThrowing
                 log.info("[transaction/rollback] {}", joinPoint.getSignature());
                 throw e;
             } finally {
+                // @After
                 log.info("[transaction/resource release] {}", joinPoint.getSignature());
             }
         }
